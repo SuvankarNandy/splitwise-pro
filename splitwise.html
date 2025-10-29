@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SplitWise Pro+</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding-bottom: 100px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+        }
+
+        .login-logo {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        .login-logo img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            background: white;
+            padding: 15px;
+        }
+
+        .login-title {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .login-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .login-card {
+            flex: 1;
+            background: white;
+            border-radius: 30px 30px 0 0;
+            padding: 40px 30px;
+            margin-top: 30px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+
+        .login-welcome {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .login-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .back-btn, .menu-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .back-btn {
+            left: 15px;
+        }
+
+        .menu-btn {
+            right: 15px;
+        }
+
+        .back-btn:hover, .menu-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 15px;
+            top: 60px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: none;
+            min-width: 220px;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .screen {
+            display: none;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1B5E20;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .input-description {
+            font-size: 12px;
+            color: #757575;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        input[type="datetime-local"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="datetime-local"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #E8F5E9;
+        }
+
+        .btn-settle {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-top: 15px;
+            width: auto;
+        }
+
+        .btn-settle:hover {
+            background: #45a049;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-danger:hover {
+            background: #da190b;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #757575;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .group-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .group-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .group-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1B5E20;
+            margin-bottom: 8px;
+        }
+
+        .group-card-info {
+            color: #757575;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .group-card-expenses {
+            color: #4CAF50;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .settlement-summary {
+            background: #E8F5E9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .settlement-summary h2 {
+            color: #1B5E20;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .settlement-item {
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            color: #1B5E20;
+            font-weight: 500;
+        }
+
+        .all-settled {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 20px;
+        }
+
+        .expense-list {
+            margin-bottom: 80px;
+        }
+
+        .date-header {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            margin: 20px 0 10px 0;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #1B5E20;
+            font-size: 15px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .expense-item {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .settlement-item-card {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            position: relative;
+            border-left: 4px solid #2196F3;
+        }
+
+        .settlement-icon {
+            display: inline-block;
+            font-size: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .settlement-label {
+            display: inline-block;
+            background: #2196F3;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .settlement-text {
+            font-size: 16px;
+            color: #1565C0;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .settlement-amount {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1976D2;
+            margin-bottom: 8px;
+        }
+
+        .settlement-datetime {
+            color: #616161;
+            font-size: 12px;
+        }
+
+        .expense-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1B5E20;
+            margin-bottom: 5px;
+        }
+
+        .expense-amount {
+            font-size: 18px;
+            font-weight: 500;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        .expense-description {
+            color: #757575;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .expense-datetime {
+            color: #9e9e9e;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .expense-details {
+            color: #757575;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .expense-type-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .badge-split {
+            background: #E8F5E9;
+            color: #1B5E20;
+        }
+
+        .badge-payment {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .badge-custom {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .expense-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .expense-action-btn {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .expense-action-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .expense-action-btn.edit {
+            color: #2196F3;
+        }
+
+        .expense-action-btn.delete {
+            color: #f44336;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+
+        .fab::before {
+            content: '+';
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+        }
+
+        .bottom-actions {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .bottom-actions .btn {
+            flex: 1;
+            margin: 0;
+        }
+
+        .empty-expense-card {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            margin: 50px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .empty-expense-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .empty-expense-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1B5E20;
+            margin-bottom: 10px;
+        }
+
+        .empty-expense-subtitle {
+            font-size: 16px;
+            color: #558B2F;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .empty-expense-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .empty-expense-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1B5E20;
+            margin-bottom: 20px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-option {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .radio-option:hover {
+            border-color: #4CAF50;
+            background: #f9f9f9;
+        }
+
+        .radio-option.active {
+            border-color: #4CAF50;
+            background: #E8F5E9;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .checkbox-item:hover {
+            background: #f5f5f5;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            accent-color: #4CAF50;
+            cursor: pointer;
+        }
+
+        .split-info {
+            background: #E8F5E9;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            color: #1B5E20;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .custom-split-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+
+        .custom-split-item label {
+            flex: 1;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .custom-split-item input[type="number"] {
+            width: 120px;
+            padding: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #757575;
+            padding: 40px 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-msg {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            max-width: 400px;
+        }
+
+        .success-msg.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .member-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+
+        .member-list-item .member-name {
+            flex: 1;
+            color: #333;
+        }
+
+        .member-remove-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .member-remove-btn:hover {
+            background: #da190b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #757575;
+        }
+
+        @keyframes slideDown {
+            from {
+                top: -50px;
+                opacity: 0;
+            }
+            to {
+                top: 20px;
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                box-shadow: none;
+            }
+
+            .back-btn, .menu-btn {
+                font-size: 16px;
+                padding: 8px 10px;
+            }
+
+            .radio-option {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-logo">
+            <img src="https://i.postimg.cc/Zq9jcsNx/Screenshot-2025-10-29-at-5-23-01-AM.png" alt="SplitWise Pro+ Logo">
+            <div class="login-title">SplitWise Pro+</div>
+            <div class="login-subtitle">Track. Split. Settle.</div>
+        </div>
+        
+        <div class="login-card">
+            <div class="login-welcome">Welcome! 👋</div>
+            <div class="login-description">Let's get you started with managing shared expenses</div>
+            
+            <div class="input-group">
+                <label for="loginUsername">Your Name</label>
+                <div class="input-description">Put your real name so that people can identify you in a group. Keep it simple so you don't forget next time.</div>
+                <input type="text" id="loginUsername" placeholder="Enter your name">
+            </div>
+
+            <div class="input-group">
+                <label for="loginPasscode">Secret Passcode</label>
+                <div class="input-description">Enter the secret passcode to use this app</div>
+                <input type="password" id="loginPasscode" placeholder="Enter passcode">
+            </div>
+
+            <button class="btn btn-login" onclick="handleLogin()">Onboard</button>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display: none;">
+        <div class="header">
+            <button class="back-btn" id="backBtn" onclick="goBackToGroups()" style="display: none;">←</button>
+            <span id="headerTitle">SplitWise Pro+</span>
+            <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">⋮</button>
+            
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" id="backupAllOption" onclick="backupAllData()" style="display: none;">📥 Backup All Data</div>
+                <div class="dropdown-item" id="restoreAllOption" onclick="showRestoreAllModal()" style="display: none;">📤 Restore All Data</div>
+                <div class="dropdown-item" id="logoutOption" onclick="handleLogout()">🚪 Logout</div>
+                
+                <div class="dropdown-item" id="copyGroupIdOption" onclick="copyGroupId()" style="display: none;">📋 Copy Group ID</div>
+                <div class="dropdown-item" id="editGroupOption" onclick="showEditGroupModal()" style="display: none;">✏️ Edit Group</div>
+                <div class="dropdown-item" id="deleteGroupOption" onclick="deleteCurrentGroup()" style="display: none; color: #f44336;">🗑️ Delete Group</div>
+            </div>
+        </div>
+
+        <div class="success-msg" id="successMsg"></div>
+
+        <!-- Screen 0: Groups List -->
+        <div id="screen-groups-list" class="screen active">
+            <h2 style="margin-bottom: 20px; color: #1B5E20;">My Groups</h2>
+            <div id="groupsList">
+                <div class="loading">Loading groups...</div>
+            </div>
+            
+            <div class="bottom-actions">
+                <button class="btn btn-primary" onclick="startGroupCreation()">Create Group</button>
+                <button class="btn btn-secondary" onclick="showJoinGroupModal()">Join Group</button>
+            </div>
+        </div>
+
+        <!-- Screen 1: Create Group - Group Name -->
+        <div id="screen-group-name" class="screen">
+            <div class="input-group">
+                <label for="groupName">Group Name</label>
+                <input type="text" id="groupName" placeholder="e.g., Goa Trip, Roommates, Friends">
+            </div>
+            <button class="btn btn-primary" onclick="proceedToUserCount()">Next</button>
+            <button class="btn btn-secondary" onclick="cancelGroupCreation()">Cancel</button>
+        </div>
+
+        <!-- Screen 2: Create Group - Number of Users -->
+        <div id="screen-user-count" class="screen">
+            <div class="input-group">
+                <label for="userCount">How many people in this group?</label>
+                <input type="number" id="userCount" placeholder="Enter number of users" min="2" max="20">
+            </div>
+            <button class="btn btn-primary" onclick="startAddingUsers()">Next</button>
+            <button class="btn btn-secondary" onclick="showScreen('screen-group-name')">Back</button>
+        </div>
+
+        <!-- Screen 3: Add User Names -->
+        <div id="screen-add-users" class="screen">
+            <div class="progress-text" id="progressText"></div>
+            <div class="input-group">
+                <label for="userName">Enter member name</label>
+                <input type="text" id="userName" placeholder="Enter name">
+            </div>
+            <button class="btn btn-primary" id="addUserBtn" onclick="addUser()">Next</button>
+        </div>
+
+        <!-- Screen 4: Main Dashboard -->
+        <div id="screen-dashboard" class="screen">
+            <div id="emptyExpenseState" class="hidden">
+                <div class="empty-expense-card">
+                    <div class="empty-expense-icon">💸</div>
+                    <div class="empty-expense-title">No Expenses Yet!</div>
+                    <div class="empty-expense-subtitle">Start tracking your shared expenses by adding your first transaction</div>
+                    <button class="empty-expense-btn" onclick="openAddExpenseModal()">+ Add Expense</button>
+                </div>
+            </div>
+
+            <div id="withExpensesState">
+                <div class="settlement-summary">
+                    <h2>Who Pays Who</h2>
+                    <div id="settlementList"></div>
+                    <button class="btn btn-settle" onclick="openSettleUpModal()">💰 Settle Up</button>
+                </div>
+                
+                <div class="expense-list">
+                    <h2 style="margin-bottom: 15px; color: #1B5E20;">Transactions</h2>
+                    <div id="expenseList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAB Button -->
+        <div class="fab" id="fabButton" onclick="openAddExpenseModal()" style="display: none;"></div>
+
+        <!-- Modal: Add/Edit Expense -->
+        <div class="modal" id="addExpenseModal">
+            <div class="modal-content">
+                <div class="modal-header" id="expenseModalTitle">Add Expense</div>
+                
+                <div class="input-group">
+                    <label for="expenseName">Expense Name</label>
+                    <input type="text" id="expenseName" placeholder="e.g., Dinner, Movie tickets">
+                </div>
+
+                <div class="input-group">
+                    <label for="expenseDescription">Description (Optional)</label>
+                    <textarea id="expenseDescription" placeholder="Add details about this expense..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="expenseAmount">Expense Amount (₹)</label>
+                    <input type="number" id="expenseAmount" placeholder="0.00" step="0.01" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="expenseDateTime">Date & Time</label>
+                    <input type="datetime-local" id="expenseDateTime">
+                </div>
+
+                <div class="input-group">
+                    <label for="paidBy">Who Paid?</label>
+                    <select id="paidBy">
+                        <option value="">Select member</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Expense Type</label>
+                    <div class="radio-group">
+                        <div class="radio-option active" onclick="selectExpenseType('split')">
+                            <input type="radio" name="expenseType" value="split" checked>
+                            Split Equally
+                        </div>
+                        <div class="radio-option" onclick="selectExpenseType('payment')">
+                            <input type="radio" name="expenseType" value="payment">
+                            Paid For
+                        </div>
+                        <div class="radio-option" onclick="selectExpenseType('custom')">
+                            <input type="radio" name="expenseType" value="custom">
+                            Split by Amount
+                        </div>
+                    </div>
+                </div>
+
+                <div id="splitEquallySection">
+                    <div class="checkbox-group">
+                        <label>Split Among</label>
+                        <div id="splitAmongList"></div>
+                    </div>
+                    <div class="split-info" id="splitInfo">Select members to see split</div>
+                </div>
+
+                <div id="paidForSection" class="hidden">
+                    <div class="input-group">
+                        <label for="paidFor">Paid For</label>
+                        <select id="paidFor">
+                            <option value="">Select member</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="customSplitSection" class="hidden">
+                    <div class="input-group">
+                        <label>Specify Amount for Each Person</label>
+                        <div id="customSplitList"></div>
+                    </div>
+                    <div class="split-info" id="customSplitInfo">Enter amounts to see total</div>
+                </div>
+
+                <button class="btn btn-primary" id="saveExpenseBtn" onclick="addExpense()">Add Expense</button>
+                <button class="btn btn-secondary" onclick="closeAddExpenseModal()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Modal: Settle Up -->
+        <div class="modal" id="settleUpModal">
+            <div class="modal-content">
+                <div class="modal-header" id="settleModalTitle">Record Settlement</div>
+                
+                <div class="input-group">
+                    <label for="settlementAmount">Settlement Amount (₹)</label>
+                    <input type="number" id="settlementAmount" placeholder="0.00" step="0.01" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="settlementFrom">From (Who is Paying)</label>
+                    <select id="settlementFrom">
+                        <option value="">Select member</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="settlementTo">To (Who is Receiving)</label>
+                    <select id="settlementTo">
+                        <option value="">Select member</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="settlementDateTime">Date & Time</label>
+                    <input type="datetime-local" id="settlementDateTime">
+                </div>
+
+                <button class="btn btn-primary" id="saveSettlementBtn" onclick="addSettlement()">Record Settlement</button>
+                <button class="btn btn-secondary" onclick="closeSettleUpModal()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Modal: Restore All Data -->
+        <div class="modal" id="restoreAllModal">
+            <div class="modal-content">
+                <div class="modal-header">Restore All Data</div>
+                
+                <div class="input-group">
+                    <label for="restoreAllDataInput">Paste Backup JSON</label>
+                    <textarea id="restoreAllDataInput" placeholder="Paste your backup JSON here..." style="min-height: 200px;"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="restoreAllData()">Restore Data</button>
+                <button class="btn btn-secondary" onclick="closeRestoreAllModal()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Modal: Edit Group -->
+        <div class="modal" id="editGroupModal">
+            <div class="modal-content">
+                <div class="modal-header">Edit Group</div>
+                
+                <div class="input-group">
+                    <label for="editGroupName">Group Name</label>
+                    <input type="text" id="editGroupName" placeholder="Enter group name">
+                </div>
+
+                <div class="input-group">
+                    <label>Members</label>
+                    <div id="editMembersList"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="newMemberName">Add New Member</label>
+                    <input type="text" id="newMemberName" placeholder="Enter member name">
+                    <button class="btn btn-secondary" onclick="addNewMember()" style="margin-top: 10px;">Add Member</button>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveGroupEdit()">Save Changes</button>
+                <button class="btn btn-secondary" onclick="closeEditGroupModal()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Modal: Join Group -->
+        <div class="modal" id="joinGroupModal">
+            <div class="modal-content">
+                <div class="modal-header">Join Group</div>
+                
+                <div class="input-group">
+                    <label for="joinGroupId">Group ID</label>
+                    <input type="text" id="joinGroupId" placeholder="Paste group ID here">
+                    <small style="color: #757575; font-size: 12px; display: block; margin-top: 5px;">
+                        Ask the group creator to share the Group ID
+                    </small>
+                </div>
+
+                <button class="btn btn-primary" onclick="joinGroup()">Join Group</button>
+                <button class="btn btn-secondary" onclick="closeJoinGroupModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig =  {
+apiKey: "AIzaSyCH_ScFYuvbp3xg5qRkxe6CnZCHF0dXV34",
+authDomain: "splitwise-pro-c391d.firebaseapp.com",
+projectId: "splitwise-pro-c391d",
+storageBucket: "splitwise-pro-c391d.firebasestorage.app",
+messagingSenderId: "607449515501",
+appId: "1:607449515501:web:5cafcc89f6c80eed1d93e4",
+measurementId: "G-TZ6Y3R93BZ"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.auth = auth;
+        window.db = db;
+        window.firebaseAuth = { signInWithEmailAndPassword, signOut, onAuthStateChanged };
+        window.firestoreFunctions = { collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, query, where, orderBy, onSnapshot };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                window.initApp();
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('main-app').style.display = 'none';
+                const savedUsername = localStorage.getItem('splitwise_username');
+                if (savedUsername) {
+                    document.getElementById('loginUsername').value = savedUsername;
+                }
+            }
+        });
+    </script>
+
+    <script>
+        let appState = {
+            groups: [],
+            currentGroupId: null,
+            currentExpenseType: 'split',
+            editingExpenseId: null,
+            editingSettlementId: null,
+            currentUserName: '',
+            tempGroupData: { name: '', members: [], currentUserIndex: 0, totalUsers: 0 },
+            unsubscribeGroups: null
+        };
+
+        async function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const passcode = document.getElementById('loginPasscode').value;
+            
+            if (!username) { alert('Please enter your name'); return; }
+            if (!passcode) { alert('Please enter the passcode'); return; }
+            
+            try {
+                const { signInWithEmailAndPassword } = window.firebaseAuth;
+                await signInWithEmailAndPassword(window.auth, 'splitwisepro@testmail.com', passcode);
+                localStorage.setItem('splitwise_username', username);
+                appState.currentUserName = username;
+                showSuccessMsg(`Welcome ${username}! 🎉`);
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Invalid passcode. Please check and try again.');
+            }
+        }
+
+        async function handleLogout() {
+            toggleMenu();
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    await window.firebaseAuth.signOut(window.auth);
+                    showSuccessMsg('Logged out successfully!');
+                } catch (error) {
+                    alert('Logout failed: ' + error.message);
+                }
+            }
+        }
+
+        async function initApp() {
+            try {
+                appState.currentUserName = localStorage.getItem('splitwise_username') || 'User';
+                await loadGroupsFromFirestore();
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showSuccessMsg('Error loading data. Please refresh.');
+            }
+        }
+
+        async function loadGroupsFromFirestore() {
+            try {
+                const { collection, query, orderBy, onSnapshot } = window.firestoreFunctions;
+                const groupsRef = collection(window.db, 'groups');
+                
+                if (appState.unsubscribeGroups) appState.unsubscribeGroups();
+
+                const q = query(groupsRef, orderBy('createdAt', 'desc'));
+                appState.unsubscribeGroups = onSnapshot(q, (snapshot) => {
+                    appState.groups = [];
+                    snapshot.forEach((doc) => {
+                        const groupData = { id: doc.id, ...doc.data() };
+                        if (groupData.createdBy === appState.currentUserName || 
+                            (groupData.members && groupData.members.includes(appState.currentUserName))) {
+                            appState.groups.push(groupData);
+                        }
+                    });
+                    
+                    if (appState.currentGroupId) {
+                        updateDashboard();
+                    } else {
+                        showGroupsList();
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading groups:', error);
+                showSuccessMsg('Error loading groups');
+            }
+        }
+
+        async function saveGroupToFirestore(group) {
+            try {
+                const { doc, setDoc } = window.firestoreFunctions;
+                await setDoc(doc(window.db, 'groups', group.id), group);
+            } catch (error) {
+                console.error('Error saving group:', error);
+                throw error;
+            }
+        }
+
+        async function updateGroupInFirestore(groupId, updates) {
+            try {
+                const { doc, updateDoc } = window.firestoreFunctions;
+                await updateDoc(doc(window.db, 'groups', groupId), updates);
+            } catch (error) {
+                console.error('Error updating group:', error);
+                throw error;
+            }
+        }
+
+        async function deleteGroupFromFirestore(groupId) {
+            try {
+                const { doc, deleteDoc } = window.firestoreFunctions;
+                await deleteDoc(doc(window.db, 'groups', groupId));
+            } catch (error) {
+                console.error('Error deleting group:', error);
+                throw error;
+            }
+        }
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        function getMaxDateTime() { return getCurrentDateTime(); }
+
+        function formatFullDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayName = days[date.getDay()];
+            const dateOptions = { day: 'numeric', month: 'short', year: 'numeric' };
+            const dateStr = date.toLocaleDateString('en-IN', dateOptions);
+            const timeOptions = { hour: '2-digit', minute: '2-digit' };
+            const timeStr = date.toLocaleTimeString('en-IN', timeOptions);
+            return `${dayName}, ${dateStr} at ${timeStr}`;
+        }
+
+        function formatDateHeader(dateTimeString) {
+            const date = new Date(dateTimeString);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            const dateStr = date.toDateString();
+            const todayStr = today.toDateString();
+            const yesterdayStr = yesterday.toDateString();
+            
+            if (dateStr === todayStr) return 'Today';
+            else if (dateStr === yesterdayStr) return 'Yesterday';
+            else {
+                const options = { day: 'numeric', month: 'short', year: 'numeric' };
+                return date.toLocaleDateString('en-IN', options);
+            }
+        }
+
+        function getDateOnly(dateTimeString) { return dateTimeString.split('T')[0]; }
+
+        function showSuccessMsg(message) {
+            const msgEl = document.getElementById('successMsg');
+            msgEl.textContent = message;
+            msgEl.classList.add('active');
+            setTimeout(() => msgEl.classList.remove('active'), 3000);
+        }
+
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('dropdownMenu');
+            const menuBtn = document.getElementById('menuBtn');
+            if (!menu.contains(event.target) && event.target !== menuBtn) {
+                menu.classList.remove('active');
+            }
+        });
+
+        function copyGroupId() {
+            toggleMenu();
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            try {
+                navigator.clipboard.writeText(group.id).then(() => {
+                    showSuccessMsg('✓ Group ID copied to clipboard!');
+                }).catch(() => {
+                    fallbackCopyToClipboard(group.id);
+                    showSuccessMsg('✓ Group ID copied to clipboard!');
+                });
+            } catch (error) {
+                alert('Error copying Group ID: ' + error.message);
+            }
+        }
+
+        function backupAllData() {
+            toggleMenu();
+            try {
+                const data = {
+                    groups: appState.groups,
+                    backupDate: new Date().toISOString(),
+                    version: '1.0',
+                    type: 'all'
+                };
+                const jsonString = JSON.stringify(data, null, 2);
+                navigator.clipboard.writeText(jsonString).then(() => {
+                    showSuccessMsg('✓ All data copied to clipboard!');
+                }).catch(() => {
+                    fallbackCopyToClipboard(jsonString);
+                    showSuccessMsg('✓ All data copied to clipboard!');
+                });
+            } catch (error) {
+                alert('Error creating backup: ' + error.message);
+            }
+        }
+
+        function fallbackCopyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+
+        function showRestoreAllModal() {
+            toggleMenu();
+            document.getElementById('restoreAllDataInput').value = '';
+            document.getElementById('restoreAllModal').classList.add('active');
+        }
+
+        function closeRestoreAllModal() {
+            document.getElementById('restoreAllModal').classList.remove('active');
+        }
+
+        async function restoreAllData() {
+            const jsonString = document.getElementById('restoreAllDataInput').value.trim();
+            if (!jsonString) { alert('Please paste backup JSON data'); return; }
+            
+            try {
+                const data = JSON.parse(jsonString);
+                if (!data.groups || !Array.isArray(data.groups)) {
+                    throw new Error('Invalid backup format');
+                }
+                
+                if (confirm('This will replace all existing data. Are you sure?')) {
+                    for (const group of appState.groups) {
+                        await deleteGroupFromFirestore(group.id);
+                    }
+                    for (const group of data.groups) {
+                        await saveGroupToFirestore(group);
+                    }
+                    closeRestoreAllModal();
+                    showSuccessMsg('✓ Data restored successfully!');
+                }
+            } catch (error) {
+                alert('Error restoring data: ' + error.message + '\nPlease check the JSON format.');
+            }
+        }
+
+        function showJoinGroupModal() {
+            document.getElementById('joinGroupId').value = '';
+            document.getElementById('joinGroupModal').classList.add('active');
+        }
+
+        function closeJoinGroupModal() {
+            document.getElementById('joinGroupModal').classList.remove('active');
+        }
+
+        async function joinGroup() {
+            const groupId = document.getElementById('joinGroupId').value.trim();
+            if (!groupId) { alert('Please enter a Group ID'); return; }
+            
+            try {
+                const { doc, getDoc, updateDoc } = window.firestoreFunctions;
+                const groupRef = doc(window.db, 'groups', groupId);
+                const groupSnap = await getDoc(groupRef);
+                
+                if (groupSnap.exists()) {
+                    const groupData = groupSnap.data();
+                    if (!groupData.members.includes(appState.currentUserName)) {
+                        const updatedMembers = [...groupData.members, appState.currentUserName];
+                        await updateDoc(groupRef, { members: updatedMembers });
+                    }
+                    closeJoinGroupModal();
+                    showSuccessMsg('✓ Group joined successfully!');
+                } else {
+                    alert('Group not found. Please check the Group ID and try again.');
+                }
+            } catch (error) {
+                alert('Error joining group: ' + error.message);
+            }
+        }
+
+        function showEditGroupModal() {
+            toggleMenu();
+            const group = getCurrentGroup();
+            if (!group) return;
+            document.getElementById('editGroupName').value = group.name;
+            document.getElementById('newMemberName').value = '';
+            renderEditMembersList();
+            document.getElementById('editGroupModal').classList.add('active');
+        }
+
+        function closeEditGroupModal() {
+            document.getElementById('editGroupModal').classList.remove('active');
+        }
+
+        function renderEditMembersList() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const membersList = document.getElementById('editMembersList');
+            membersList.innerHTML = '';
+            
+            group.members.forEach((member, index) => {
+                const memberItem = document.createElement('div');
+                memberItem.className = 'member-list-item';
+                memberItem.innerHTML = `
+                    <span class="member-name">${member}</span>
+                    <button class="member-remove-btn" onclick="removeMember(${index})">Remove</button>
+                `;
+                membersList.appendChild(memberItem);
+            });
+        }
+
+        function addNewMember() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const newMemberName = document.getElementById('newMemberName').value.trim();
+            if (!newMemberName) { alert('Please enter a member name'); return; }
+            if (group.members.includes(newMemberName)) { alert('This member already exists'); return; }
+            
+            group.members.push(newMemberName);
+            document.getElementById('newMemberName').value = '';
+            renderEditMembersList();
+        }
+
+        function removeMember(index) {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            if (group.members.length <= 2) { alert('Group must have at least 2 members'); return; }
+            
+            const memberName = group.members[index];
+            const hasExpenses = group.expenses && group.expenses.some(exp => 
+                exp.paidBy === memberName || 
+                (exp.splitAmong && exp.splitAmong.includes(memberName)) ||
+                (exp.customSplit && exp.customSplit[memberName]) ||
+                exp.paidFor === memberName
+            );
+            
+            if (hasExpenses) {
+                if (!confirm(`${memberName} is involved in transactions. Removing will affect calculations. Continue?`)) return;
+            }
+            
+            group.members.splice(index, 1);
+            renderEditMembersList();
+        }
+
+        async function saveGroupEdit() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const newName = document.getElementById('editGroupName').value.trim();
+            if (!newName) { alert('Please enter a group name'); return; }
+            if (group.members.length < 2) { alert('Group must have at least 2 members'); return; }
+            
+            try {
+                await updateGroupInFirestore(group.id, { name: newName, members: group.members });
+                closeEditGroupModal();
+                showSuccessMsg('✓ Group updated successfully!');
+                document.getElementById('headerTitle').textContent = newName;
+            } catch (error) {
+                alert('Error updating group: ' + error.message);
+            }
+        }
+
+        function showGroupsList() {
+            const groupsList = document.getElementById('groupsList');
+            document.getElementById('headerTitle').textContent = 'SplitWise Pro+';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('fabButton').style.display = 'none';
+            
+            document.getElementById('backupAllOption').style.display = 'block';
+            document.getElementById('restoreAllOption').style.display = 'block';
+            document.getElementById('logoutOption').style.display = 'block';
+            document.getElementById('copyGroupIdOption').style.display = 'none';
+            document.getElementById('editGroupOption').style.display = 'none';
+            document.getElementById('deleteGroupOption').style.display = 'none';
+            
+            if (appState.groups.length === 0) {
+                groupsList.innerHTML = '<div class="empty-state">No groups yet.<br>Create a new group or join an existing one!</div>';
+            } else {
+                groupsList.innerHTML = '';
+                appState.groups.forEach(group => {
+                    const groupCard = document.createElement('div');
+                    groupCard.className = 'group-card';
+                    groupCard.onclick = () => openGroup(group.id);
+                    
+                    const expenseCount = group.expenses ? group.expenses.length : 0;
+                    const totalAmount = group.expenses ? group.expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
+                    
+                    groupCard.innerHTML = `
+                        <div class="group-card-title">${group.name}</div>
+                        <div class="group-card-info">${group.members.length} members: ${group.members.join(', ')}</div>
+                        <div class="group-card-expenses">${expenseCount} transaction${expenseCount !== 1 ? 's' : ''} • Total: ₹${totalAmount.toFixed(2)}</div>
+                    `;
+                    groupsList.appendChild(groupCard);
+                });
+            }
+            showScreen('screen-groups-list');
+        }
+
+        function startGroupCreation() {
+            appState.tempGroupData = { name: '', members: [], currentUserIndex: 0, totalUsers: 0 };
+            document.getElementById('groupName').value = '';
+            showScreen('screen-group-name');
+        }
+
+        function cancelGroupCreation() { showGroupsList(); }
+
+        function proceedToUserCount() {
+            const groupName = document.getElementById('groupName').value.trim();
+            if (!groupName) { alert('Please enter a group name'); return; }
+            appState.tempGroupData.name = groupName;
+            document.getElementById('userCount').value = '';
+            showScreen('screen-user-count');
+        }
+
+        function startAddingUsers() {
+            const userCount = parseInt(document.getElementById('userCount').value);
+            if (!userCount || userCount < 2) { alert('Please enter at least 2 members'); return; }
+            appState.tempGroupData.totalUsers = userCount;
+            appState.tempGroupData.currentUserIndex = 0;
+            appState.tempGroupData.members = [];
+            showScreen('screen-add-users');
+            updateProgressText();
+        }
+
+        function addUser() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) { alert('Please enter a name'); return; }
+            
+            appState.tempGroupData.members.push(userName);
+            appState.tempGroupData.currentUserIndex++;
+            document.getElementById('userName').value = '';
+            
+            if (appState.tempGroupData.currentUserIndex < appState.tempGroupData.totalUsers) {
+                updateProgressText();
+            } else {
+                createGroup();
+            }
+        }
+
+        function updateProgressText() {
+            const current = appState.tempGroupData.currentUserIndex + 1;
+            const total = appState.tempGroupData.totalUsers;
+            document.getElementById('progressText').textContent = `Adding member ${current} of ${total}`;
+            document.getElementById('addUserBtn').textContent = current === total ? 'Create Group' : 'Next';
+        }
+
+        async function createGroup() {
+            try {
+                const newGroup = {
+                    id: Date.now().toString(),
+                    name: appState.tempGroupData.name,
+                    members: appState.tempGroupData.members,
+                    expenses: [],
+                    createdBy: appState.currentUserName,
+                    createdAt: new Date().toISOString()
+                };
+                await saveGroupToFirestore(newGroup);
+                showSuccessMsg('✓ Group created successfully!');
+                openGroup(newGroup.id);
+            } catch (error) {
+                alert('Error creating group: ' + error.message);
+            }
+        }
+
+        function openGroup(groupId) {
+            appState.currentGroupId = groupId;
+            const group = appState.groups.find(g => g.id === groupId);
+            if (!group) { alert('Group not found'); showGroupsList(); return; }
+            
+            document.getElementById('headerTitle').textContent = group.name;
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('fabButton').style.display = 'flex';
+            
+            document.getElementById('backupAllOption').style.display = 'none';
+            document.getElementById('restoreAllOption').style.display = 'none';
+            document.getElementById('logoutOption').style.display = 'none';
+            document.getElementById('copyGroupIdOption').style.display = 'block';
+            document.getElementById('editGroupOption').style.display = 'block';
+            document.getElementById('deleteGroupOption').style.display = 'block';
+            
+            showScreen('screen-dashboard');
+            updateDashboard();
+        }
+
+        function goBackToGroups() {
+            appState.currentGroupId = null;
+            showGroupsList();
+        }
+
+        async function deleteCurrentGroup() {
+            toggleMenu();
+            const group = appState.groups.find(g => g.id === appState.currentGroupId);
+            if (!group) return;
+            
+            if (confirm(`Are you sure you want to delete the group "${group.name}" and all its transactions? This cannot be undone.`)) {
+                try {
+                    await deleteGroupFromFirestore(group.id);
+                    showSuccessMsg('✓ Group deleted successfully!');
+                    goBackToGroups();
+                } catch (error) {
+                    alert('Error deleting group: ' + error.message);
+                }
+            }
+        }
+
+        function getCurrentGroup() {
+            return appState.groups.find(g => g.id === appState.currentGroupId);
+        }
+
+        function openSettleUpModal() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            appState.editingSettlementId = null;
+            document.getElementById('settleModalTitle').textContent = 'Record Settlement';
+            document.getElementById('saveSettlementBtn').textContent = 'Record Settlement';
+            document.getElementById('saveSettlementBtn').onclick = addSettlement;
+            
+            document.getElementById('settlementAmount').value = '';
+            document.getElementById('settlementFrom').value = '';
+            document.getElementById('settlementTo').value = '';
+            document.getElementById('settlementDateTime').value = getCurrentDateTime();
+            document.getElementById('settlementDateTime').max = getMaxDateTime();
+            
+            const fromSelect = document.getElementById('settlementFrom');
+            const toSelect = document.getElementById('settlementTo');
+            
+            fromSelect.innerHTML = '<option value="">Select member</option>';
+            toSelect.innerHTML = '<option value="">Select member</option>';
+            
+            group.members.forEach(member => {
+                fromSelect.appendChild(new Option(member, member));
+                toSelect.appendChild(new Option(member, member));
+            });
+            
+            document.getElementById('settleUpModal').classList.add('active');
+        }
+
+        function closeSettleUpModal() {
+            document.getElementById('settleUpModal').classList.remove('active');
+            appState.editingSettlementId = null;
+        }
+
+        async function addSettlement() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const amount = parseFloat(document.getElementById('settlementAmount').value);
+            const from = document.getElementById('settlementFrom').value;
+            const to = document.getElementById('settlementTo').value;
+            const dateTime = document.getElementById('settlementDateTime').value;
+            
+            if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+            if (!from) { alert('Please select who is paying'); return; }
+            if (!to) { alert('Please select who is receiving'); return; }
+            if (from === to) { alert('Payer and receiver cannot be the same person'); return; }
+            if (!dateTime) { alert('Please select date and time'); return; }
+            if (new Date(dateTime) > new Date()) { alert('Cannot select future date/time'); return; }
+            
+            const settlement = {
+                id: Date.now().toString(),
+                type: 'settlement',
+                amount: amount,
+                from: from,
+                to: to,
+                dateTime: dateTime,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                const updatedExpenses = [...(group.expenses || []), settlement];
+                await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                closeSettleUpModal();
+                showSuccessMsg('✓ Settlement recorded successfully!');
+            } catch (error) {
+                alert('Error recording settlement: ' + error.message);
+            }
+        }
+
+        function openEditSettlementModal(settlementId) {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const settlement = group.expenses.find(e => e.id === settlementId);
+            if (!settlement) return;
+            
+            appState.editingSettlementId = settlementId;
+            document.getElementById('settleModalTitle').textContent = 'Edit Settlement';
+            document.getElementById('saveSettlementBtn').textContent = 'Update Settlement';
+            document.getElementById('saveSettlementBtn').onclick = updateSettlement;
+            
+            document.getElementById('settlementAmount').value = settlement.amount;
+            document.getElementById('settlementDateTime').value = settlement.dateTime;
+            document.getElementById('settlementDateTime').max = getMaxDateTime();
+            
+            const fromSelect = document.getElementById('settlementFrom');
+            const toSelect = document.getElementById('settlementTo');
+            
+            fromSelect.innerHTML = '<option value="">Select member</option>';
+            toSelect.innerHTML = '<option value="">Select member</option>';
+            
+            group.members.forEach(member => {
+                fromSelect.appendChild(new Option(member, member));
+                toSelect.appendChild(new Option(member, member));
+            });
+            
+            document.getElementById('settlementFrom').value = settlement.from;
+            document.getElementById('settlementTo').value = settlement.to;
+            document.getElementById('settleUpModal').classList.add('active');
+        }
+
+        async function updateSettlement() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const settlementIndex = group.expenses.findIndex(e => e.id === appState.editingSettlementId);
+            if (settlementIndex === -1) return;
+            
+            const amount = parseFloat(document.getElementById('settlementAmount').value);
+            const from = document.getElementById('settlementFrom').value;
+            const to = document.getElementById('settlementTo').value;
+            const dateTime = document.getElementById('settlementDateTime').value;
+            
+            if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+            if (!from) { alert('Please select who is paying'); return; }
+            if (!to) { alert('Please select who is receiving'); return; }
+            if (from === to) { alert('Payer and receiver cannot be the same person'); return; }
+            if (!dateTime) { alert('Please select date and time'); return; }
+            if (new Date(dateTime) > new Date()) { alert('Cannot select future date/time'); return; }
+            
+            const settlement = {
+                id: appState.editingSettlementId,
+                type: 'settlement',
+                amount: amount,
+                from: from,
+                to: to,
+                dateTime: dateTime,
+                timestamp: group.expenses[settlementIndex].timestamp,
+                updatedAt: new Date().toISOString()
+            };
+            
+            try {
+                const updatedExpenses = [...group.expenses];
+                updatedExpenses[settlementIndex] = settlement;
+                await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                closeSettleUpModal();
+                showSuccessMsg('✓ Settlement updated successfully!');
+            } catch (error) {
+                alert('Error updating settlement: ' + error.message);
+            }
+        }
+
+        async function deleteSettlement(settlementId) {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            if (confirm('Are you sure you want to delete this settlement?')) {
+                try {
+                    const updatedExpenses = group.expenses.filter(e => e.id !== settlementId);
+                    await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                    showSuccessMsg('✓ Settlement deleted successfully!');
+                } catch (error) {
+                    alert('Error deleting settlement: ' + error.message);
+                }
+            }
+        }
+
+        function selectExpenseType(type) {
+            appState.currentExpenseType = type;
+            document.querySelectorAll('.radio-option').forEach(option => option.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('splitEquallySection').classList.add('hidden');
+            document.getElementById('paidForSection').classList.add('hidden');
+            document.getElementById('customSplitSection').classList.add('hidden');
+            
+            if (type === 'split') {
+                document.getElementById('splitEquallySection').classList.remove('hidden');
+            } else if (type === 'payment') {
+                document.getElementById('paidForSection').classList.remove('hidden');
+            } else if (type === 'custom') {
+                document.getElementById('customSplitSection').classList.remove('hidden');
+                renderCustomSplitInputs();
+            }
+        }
+
+        function renderCustomSplitInputs() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const customSplitList = document.getElementById('customSplitList');
+            customSplitList.innerHTML = '';
+            
+            group.members.forEach((member, index) => {
+                const splitItem = document.createElement('div');
+                splitItem.className = 'custom-split-item';
+                splitItem.innerHTML = `
+                    <label>${member}</label>
+                    <input type="number" id="custom-amount-${index}" 
+                           value="0" min="0" step="0.01" 
+                           onchange="updateCustomSplitInfo()" 
+                           oninput="updateCustomSplitInfo()">
+                `;
+                customSplitList.appendChild(splitItem);
+            });
+            updateCustomSplitInfo();
+        }
+
+        function updateCustomSplitInfo() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const totalAmount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+            let sumOfSplits = 0;
+            
+            group.members.forEach((member, index) => {
+                const input = document.getElementById(`custom-amount-${index}`);
+                if (input) sumOfSplits += parseFloat(input.value) || 0;
+            });
+            
+            const infoEl = document.getElementById('customSplitInfo');
+            if (totalAmount > 0) {
+                const diff = Math.abs(totalAmount - sumOfSplits);
+                if (diff < 0.01) {
+                    infoEl.textContent = `✓ Total matches: ₹${sumOfSplits.toFixed(2)}`;
+                    infoEl.style.background = '#E8F5E9';
+                } else {
+                    infoEl.textContent = `⚠ Total: ₹${sumOfSplits.toFixed(2)} (Expected: ₹${totalAmount.toFixed(2)})`;
+                    infoEl.style.background = '#FFF3E0';
+                }
+            } else {
+                infoEl.textContent = 'Enter expense amount first';
+                infoEl.style.background = '#E8F5E9';
+            }
+        }
+
+        function openAddExpenseModal() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            appState.editingExpenseId = null;
+            document.getElementById('expenseModalTitle').textContent = 'Add Expense';
+            document.getElementById('saveExpenseBtn').textContent = 'Add Expense';
+            document.getElementById('saveExpenseBtn').onclick = addExpense;
+            
+            document.getElementById('expenseName').value = '';
+            document.getElementById('expenseDescription').value = '';
+            document.getElementById('expenseAmount').value = '';
+            document.getElementById('expenseDateTime').value = getCurrentDateTime();
+            document.getElementById('expenseDateTime').max = getMaxDateTime();
+            document.getElementById('paidBy').value = '';
+            document.getElementById('paidFor').value = '';
+            
+            appState.currentExpenseType = 'split';
+            document.querySelectorAll('.radio-option').forEach(option => option.classList.remove('active'));
+            document.querySelector('.radio-option').classList.add('active');
+            document.getElementById('splitEquallySection').classList.remove('hidden');
+            document.getElementById('paidForSection').classList.add('hidden');
+            document.getElementById('customSplitSection').classList.add('hidden');
+            
+            populateExpenseForm(group);
+            document.querySelectorAll('#splitAmongList input[type="checkbox"]').forEach(cb => cb.checked = true);
+            updateSplitInfo();
+            document.getElementById('addExpenseModal').classList.add('active');
+        }
+
+        function openEditExpenseModal(expenseId) {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const expense = group.expenses.find(e => e.id === expenseId);
+            if (!expense) return;
+            
+            appState.editingExpenseId = expenseId;
+            document.getElementById('expenseModalTitle').textContent = 'Edit Expense';
+            document.getElementById('saveExpenseBtn').textContent = 'Update Expense';
+            document.getElementById('saveExpenseBtn').onclick = updateExpense;
+            
+            document.getElementById('expenseName').value = expense.name;
+            document.getElementById('expenseDescription').value = expense.description || '';
+            document.getElementById('expenseAmount').value = expense.amount;
+            document.getElementById('expenseDateTime').value = expense.dateTime || getCurrentDateTime();
+            document.getElementById('expenseDateTime').max = getMaxDateTime();
+            document.getElementById('paidBy').value = expense.paidBy;
+            
+            appState.currentExpenseType = expense.type;
+            populateExpenseForm(group);
+            
+            document.querySelectorAll('.radio-option').forEach(option => option.classList.remove('active'));
+            
+            if (expense.type === 'split') {
+                document.querySelectorAll('.radio-option')[0].classList.add('active');
+                document.getElementById('splitEquallySection').classList.remove('hidden');
+                document.getElementById('paidForSection').classList.add('hidden');
+                document.getElementById('customSplitSection').classList.add('hidden');
+                document.querySelectorAll('#splitAmongList input[type="checkbox"]').forEach(cb => {
+                    cb.checked = expense.splitAmong.includes(cb.value);
+                });
+            } else if (expense.type === 'payment') {
+                document.querySelectorAll('.radio-option')[1].classList.add('active');
+                document.getElementById('splitEquallySection').classList.add('hidden');
+                document.getElementById('paidForSection').classList.remove('hidden');
+                document.getElementById('customSplitSection').classList.add('hidden');
+                document.getElementById('paidFor').value = expense.paidFor;
+            } else if (expense.type === 'custom') {
+                document.querySelectorAll('.radio-option')[2].classList.add('active');
+                document.getElementById('splitEquallySection').classList.add('hidden');
+                document.getElementById('paidForSection').classList.add('hidden');
+                document.getElementById('customSplitSection').classList.remove('hidden');
+                renderCustomSplitInputs();
+                group.members.forEach((member, index) => {
+                    const input = document.getElementById(`custom-amount-${index}`);
+                    if (input && expense.customSplit && expense.customSplit[member]) {
+                        input.value = expense.customSplit[member];
+                    }
+                });
+                updateCustomSplitInfo();
+            }
+            
+            updateSplitInfo();
+            document.getElementById('addExpenseModal').classList.add('active');
+        }
+
+        function populateExpenseForm(group) {
+            const paidBySelect = document.getElementById('paidBy');
+            const currentPaidBy = paidBySelect.value;
+            paidBySelect.innerHTML = '<option value="">Select member</option>';
+            group.members.forEach(member => {
+                paidBySelect.appendChild(new Option(member, member));
+            });
+            paidBySelect.value = currentPaidBy;
+            
+            const paidForSelect = document.getElementById('paidFor');
+            const currentPaidFor = paidForSelect.value;
+            paidForSelect.innerHTML = '<option value="">Select member</option>';
+            group.members.forEach(member => {
+                paidForSelect.appendChild(new Option(member, member));
+            });
+            paidForSelect.value = currentPaidFor;
+            
+            const splitAmongList = document.getElementById('splitAmongList');
+            splitAmongList.innerHTML = '';
+            group.members.forEach((member, index) => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                checkboxItem.innerHTML = `
+                    <input type="checkbox" id="split-${index}" value="${member}" onchange="updateSplitInfo()">
+                    <label for="split-${index}" style="cursor: pointer; flex: 1;">${member}</label>
+                `;
+                splitAmongList.appendChild(checkboxItem);
+            });
+        }
+
+        function closeAddExpenseModal() {
+            document.getElementById('addExpenseModal').classList.remove('active');
+            appState.editingExpenseId = null;
+        }
+
+        function updateSplitInfo() {
+            const amount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+            const checkedBoxes = document.querySelectorAll('#splitAmongList input[type="checkbox"]:checked');
+            const splitCount = checkedBoxes.length;
+            
+            if (splitCount > 0 && amount > 0) {
+                const perPerson = (amount / splitCount).toFixed(2);
+                document.getElementById('splitInfo').textContent = `₹${perPerson} per person (${splitCount} members)`;
+            } else {
+                document.getElementById('splitInfo').textContent = 'Select members to see split';
+            }
+        }
+
+        document.getElementById('expenseAmount').addEventListener('input', function() {
+            updateSplitInfo();
+            if (appState.currentExpenseType === 'custom') updateCustomSplitInfo();
+        });
+
+        async function addExpense() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const name = document.getElementById('expenseName').value.trim();
+            const description = document.getElementById('expenseDescription').value.trim();
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const dateTime = document.getElementById('expenseDateTime').value;
+            const paidBy = document.getElementById('paidBy').value;
+            const expenseType = appState.currentExpenseType;
+            
+            if (!name) { alert('Please enter an expense name'); return; }
+            if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+            if (!dateTime) { alert('Please select date and time'); return; }
+            if (new Date(dateTime) > new Date()) { alert('Cannot select future date/time'); return; }
+            if (!paidBy) { alert('Please select who paid'); return; }
+            
+            let expense = {
+                id: Date.now().toString(),
+                name: name,
+                description: description,
+                amount: amount,
+                dateTime: dateTime,
+                paidBy: paidBy,
+                type: expenseType,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (expenseType === 'split') {
+                const splitAmongCheckboxes = document.querySelectorAll('#splitAmongList input[type="checkbox"]:checked');
+                if (splitAmongCheckboxes.length === 0) { alert('Please select at least one member to split among'); return; }
+                const splitAmong = Array.from(splitAmongCheckboxes).map(cb => cb.value);
+                const perPersonAmount = amount / splitAmong.length;
+                expense.splitAmong = splitAmong;
+                expense.perPersonAmount = perPersonAmount.toFixed(2);
+            } else if (expenseType === 'payment') {
+                const paidFor = document.getElementById('paidFor').value;
+                if (!paidFor) { alert('Please select who received the payment'); return; }
+                if (paidBy === paidFor) { alert('Payer and receiver cannot be the same person'); return; }
+                expense.paidFor = paidFor;
+            } else if (expenseType === 'custom') {
+                const customSplit = {};
+                let sumOfSplits = 0;
+                group.members.forEach((member, index) => {
+                    const input = document.getElementById(`custom-amount-${index}`);
+                    const memberAmount = parseFloat(input.value) || 0;
+                    if (memberAmount > 0) {
+                        customSplit[member] = memberAmount;
+                        sumOfSplits += memberAmount;
+                    }
+                });
+                if (Object.keys(customSplit).length === 0) { alert('Please specify amount for at least one member'); return; }
+                if (Math.abs(sumOfSplits - amount) > 0.01) {
+                    alert(`Total split amounts (₹${sumOfSplits.toFixed(2)}) must equal expense amount (₹${amount.toFixed(2)})`);
+                    return;
+                }
+                expense.customSplit = customSplit;
+            }
+            
+            try {
+                const updatedExpenses = [...(group.expenses || []), expense];
+                await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                closeAddExpenseModal();
+                showSuccessMsg('✓ Expense added successfully!');
+            } catch (error) {
+                alert('Error adding expense: ' + error.message);
+            }
+        }
+
+        async function updateExpense() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const expenseIndex = group.expenses.findIndex(e => e.id === appState.editingExpenseId);
+            if (expenseIndex === -1) return;
+            
+            const name = document.getElementById('expenseName').value.trim();
+            const description = document.getElementById('expenseDescription').value.trim();
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const dateTime = document.getElementById('expenseDateTime').value;
+            const paidBy = document.getElementById('paidBy').value;
+            const expenseType = appState.currentExpenseType;
+            
+            if (!name) { alert('Please enter an expense name'); return; }
+            if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+            if (!dateTime) { alert('Please select date and time'); return; }
+            if (new Date(dateTime) > new Date()) { alert('Cannot select future date/time'); return; }
+            if (!paidBy) { alert('Please select who paid'); return; }
+            
+            let expense = {
+                id: appState.editingExpenseId,
+                name: name,
+                description: description,
+                amount: amount,
+                dateTime: dateTime,
+                paidBy: paidBy,
+                type: expenseType,
+                timestamp: group.expenses[expenseIndex].timestamp,
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (expenseType === 'split') {
+                const splitAmongCheckboxes = document.querySelectorAll('#splitAmongList input[type="checkbox"]:checked');
+                if (splitAmongCheckboxes.length === 0) { alert('Please select at least one member to split among'); return; }
+                const splitAmong = Array.from(splitAmongCheckboxes).map(cb => cb.value);
+                const perPersonAmount = amount / splitAmong.length;
+                expense.splitAmong = splitAmong;
+                expense.perPersonAmount = perPersonAmount.toFixed(2);
+            } else if (expenseType === 'payment') {
+                const paidFor = document.getElementById('paidFor').value;
+                if (!paidFor) { alert('Please select who received the payment'); return; }
+                if (paidBy === paidFor) { alert('Payer and receiver cannot be the same person'); return; }
+                expense.paidFor = paidFor;
+            } else if (expenseType === 'custom') {
+                const customSplit = {};
+                let sumOfSplits = 0;
+                group.members.forEach((member, index) => {
+                    const input = document.getElementById(`custom-amount-${index}`);
+                    const memberAmount = parseFloat(input.value) || 0;
+                    if (memberAmount > 0) {
+                        customSplit[member] = memberAmount;
+                        sumOfSplits += memberAmount;
+                    }
+                });
+                if (Object.keys(customSplit).length === 0) { alert('Please specify amount for at least one member'); return; }
+                if (Math.abs(sumOfSplits - amount) > 0.01) {
+                    alert(`Total split amounts (₹${sumOfSplits.toFixed(2)}) must equal expense amount (₹${amount.toFixed(2)})`);
+                    return;
+                }
+                expense.customSplit = customSplit;
+            }
+            
+            try {
+                const updatedExpenses = [...group.expenses];
+                updatedExpenses[expenseIndex] = expense;
+                await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                closeAddExpenseModal();
+                showSuccessMsg('✓ Expense updated successfully!');
+            } catch (error) {
+                alert('Error updating expense: ' + error.message);
+            }
+        }
+
+        async function deleteExpense(expenseId) {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            if (confirm('Are you sure you want to delete this expense?')) {
+                try {
+                    const updatedExpenses = group.expenses.filter(e => e.id !== expenseId);
+                    await updateGroupInFirestore(group.id, { expenses: updatedExpenses });
+                    showSuccessMsg('✓ Expense deleted successfully!');
+                } catch (error) {
+                    alert('Error deleting expense: ' + error.message);
+                }
+            }
+        }
+
+        function updateDashboard() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const hasExpenses = group.expenses && group.expenses.length > 0;
+            
+            if (hasExpenses) {
+                document.getElementById('emptyExpenseState').classList.add('hidden');
+                document.getElementById('withExpensesState').classList.remove('hidden');
+                updateExpenseList();
+                updateSettlements();
+            } else {
+                document.getElementById('emptyExpenseState').classList.remove('hidden');
+                document.getElementById('withExpensesState').classList.add('hidden');
+            }
+        }
+
+        function updateExpenseList() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const expenseList = document.getElementById('expenseList');
+            if (!group.expenses || group.expenses.length === 0) return;
+            
+            expenseList.innerHTML = '';
+            const sortedExpenses = [...group.expenses].sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+            
+            const expensesByDate = {};
+            sortedExpenses.forEach(expense => {
+                const dateKey = getDateOnly(expense.dateTime);
+                if (!expensesByDate[dateKey]) expensesByDate[dateKey] = [];
+                expensesByDate[dateKey].push(expense);
+            });
+            
+            Object.keys(expensesByDate).sort((a, b) => new Date(b) - new Date(a)).forEach(dateKey => {
+                const dateHeader = document.createElement('div');
+                dateHeader.className = 'date-header';
+                dateHeader.textContent = formatDateHeader(dateKey + 'T00:00:00');
+                expenseList.appendChild(dateHeader);
+                
+                expensesByDate[dateKey].forEach(expense => {
+                    if (expense.type === 'settlement') {
+                        const settlementItem = document.createElement('div');
+                        settlementItem.className = 'settlement-item-card';
+                        settlementItem.innerHTML = `
+                            <div class="expense-actions">
+                                <button class="expense-action-btn edit" onclick="openEditSettlementModal('${expense.id}')">Edit</button>
+                                <button class="expense-action-btn delete" onclick="deleteSettlement('${expense.id}')">Delete</button>
+                            </div>
+                            <div class="settlement-label">SETTLEMENT</div>
+                            <div class="settlement-text"><span class="settlement-icon">💸</span>${expense.from} paid ${expense.to}</div>
+                            <div class="settlement-amount">₹${expense.amount.toFixed(2)}</div>
+                            <div class="settlement-datetime">📅 ${formatFullDateTime(expense.dateTime)}</div>
+                        `;
+                        expenseList.appendChild(settlementItem);
+                    } else {
+                        const expenseItem = document.createElement('div');
+                        expenseItem.className = 'expense-item';
+                        
+                        let html = `
+                            <div class="expense-actions">
+                                <button class="expense-action-btn edit" onclick="openEditExpenseModal('${expense.id}')">Edit</button>
+                                <button class="expense-action-btn delete" onclick="deleteExpense('${expense.id}')">Delete</button>
+                            </div>
+                            <div class="expense-title">${expense.name}</div>`;
+                        
+                        if (expense.description) html += `<div class="expense-description">${expense.description}</div>`;
+                        html += `<div class="expense-amount">₹${expense.amount.toFixed(2)}</div>`;
+                        if (expense.dateTime) html += `<div class="expense-datetime">📅 ${formatFullDateTime(expense.dateTime)}</div>`;
+                        
+                        if (expense.type === 'split') {
+                            html += `
+                                <div class="expense-details">
+                                    Paid by ${expense.paidBy} • Split among ${expense.splitAmong.length} members
+                                    <br>₹${expense.perPersonAmount} per person
+                                </div>
+                                <span class="expense-type-badge badge-split">Split Equally</span>`;
+                        } else if (expense.type === 'payment') {
+                            html += `
+                                <div class="expense-details">${expense.paidBy} paid for ${expense.paidFor}</div>
+                                <span class="expense-type-badge badge-payment">Paid For</span>`;
+                        } else if (expense.type === 'custom') {
+                            const splitDetails = Object.entries(expense.customSplit)
+                                .map(([member, amt]) => `${member}: ₹${parseFloat(amt).toFixed(2)}`).join(', ');
+                            html += `
+                                <div class="expense-details">Paid by ${expense.paidBy}<br>${splitDetails}</div>
+                                <span class="expense-type-badge badge-custom">Split by Amount</span>`;
+                        }
+                        
+                        expenseItem.innerHTML = html;
+                        expenseList.appendChild(expenseItem);
+                    }
+                });
+            });
+        }
+
+        function updateSettlements() {
+            const group = getCurrentGroup();
+            if (!group) return;
+            
+            const settlementList = document.getElementById('settlementList');
+            const balances = {};
+            group.members.forEach(member => balances[member] = 0);
+            
+            if (group.expenses) {
+                group.expenses.forEach(expense => {
+                    if (expense.type === 'split') {
+                        balances[expense.paidBy] += expense.amount;
+                        expense.splitAmong.forEach(member => {
+                            balances[member] -= parseFloat(expense.perPersonAmount);
+                        });
+                    } else if (expense.type === 'payment') {
+                        balances[expense.paidBy] += expense.amount;
+                        balances[expense.paidFor] -= expense.amount;
+                    } else if (expense.type === 'custom') {
+                        balances[expense.paidBy] += expense.amount;
+                        Object.entries(expense.customSplit).forEach(([member, amount]) => {
+                            balances[member] -= parseFloat(amount);
+                        });
+                    } else if (expense.type === 'settlement') {
+                        balances[expense.from] += expense.amount;
+                        balances[expense.to] -= expense.amount;
+                    }
+                });
+            }
+            
+            const creditors = [];
+            const debtors = [];
+            
+            Object.keys(balances).forEach(member => {
+                const balance = balances[member];
+                if (balance > 0.01) creditors.push({ name: member, amount: balance });
+                else if (balance < -0.01) debtors.push({ name: member, amount: -balance });
+            });
+            
+            const settlements = [];
+            let i = 0, j = 0;
+            
+            while (i < debtors.length && j < creditors.length) {
+                const debtor = debtors[i];
+                const creditor = creditors[j];
+                const amount = Math.min(debtor.amount, creditor.amount);
+                settlements.push({ from: debtor.name, to: creditor.name, amount: amount });
+                debtor.amount -= amount;
+                creditor.amount -= amount;
+                if (debtor.amount < 0.01) i++;
+                if (creditor.amount < 0.01) j++;
+            }
+            
+            if (settlements.length === 0) {
+                settlementList.innerHTML = '<div class="all-settled">✓ All Settled!</div>';
+            } else {
+                settlementList.innerHTML = '';
+                settlements.forEach(settlement => {
+                    const settlementItem = document.createElement('div');
+                    settlementItem.className = 'settlement-item';
+                    settlementItem.textContent = `${settlement.from} pays ${settlement.to} ₹${settlement.amount.toFixed(2)}`;
+                    settlementList.appendChild(settlementItem);
+                });
+            }
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        document.getElementById('loginUsername').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginPasscode').focus();
+        });
+
+        document.getElementById('loginPasscode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        document.getElementById('userName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addUser();
+        });
+        
+        document.getElementById('userCount').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') startAddingUsers();
+        });
+
+        document.getElementById('groupName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') proceedToUserCount();
+        });
+    </script>
+</body>
+</html>
